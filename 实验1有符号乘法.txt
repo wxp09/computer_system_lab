@@ -1,0 +1,79 @@
+8
+# 输入两个整数
+movi 0
+in R1        # 输入乘数a
+movb R0,R1   # 乘数a存放到内存0000 0000
+in R1        # 输入被乘数b
+movi 1
+movb R0,R1   # 乘数b存放在内存0000 0001
+movi 0		 # 设置R0的值为0
+sub R1,R0	 # b-0，看b是否为正，设置G值
+movd    	 # R3=16
+movi 15
+add R3,R0	 # R3=16+15=31
+jg      	 # b正就跳转
+movi 1
+movc R1,R0   # 取出b值
+movi 0
+sub R0,R1	 # R1=0-b=-b，设置G值
+movd   		 # R3=24
+movi 7
+add R3,R0	 # R3=24+7=31
+jg      	 # b负就跳转
+# b=0时
+movi 0
+out R0		 # 直接输出0
+halt
+movd    	 # R3=31
+movi 1		 # 设置R0的值为1
+movc R1,R0   # 取出b值
+movi 0
+sub R0,R1 	 # R0=0-b=-b，设置G值
+mova R1,R0
+movi 3
+movb R0,R1 	 # -b存放在内存0000 0010
+movi 31
+add R3,R0	 # R3=31+31=62
+jg			 # b<0跳转
+movi 1       # 设置R0中的值为1
+movc R1,R0   # 从内存中取出值b
+movi 1       # 设置R0中的值为1
+sub R1,R0    # R1即b值减1，此时设置G值
+movi 1       # 设置R0中的值为1
+movb R0,R1   # b值需要保存回去
+movi 0       # R0中设置为0，即内存地址0
+movc R2,R0   # 取出a值
+movi 2       # R0中设置为2，即内存地址0000 0010
+movc R1,R0   # 取出结果
+add R1,R2    # 做加法
+movb R0,R1   # 将结果存回去
+movd         # 保存当前的PC值到R3
+movi -12     # R0的值设置为-12
+add R3,R0    # R3的值加-12
+jg           # 如果第12行的减法设置G为1,就跳转
+movi 2       # R0中设置为2，即内存地址0000 0010
+movc R1,R0   # 取出结果
+out R1       # 打印结果
+halt
+movi 3       # R0中的值为3
+movc R1,R0   # 从内存中取出值b
+movi 1       # 设置R0中的值为1
+sub R1,R0    # R1即b值减1，此时设置G值
+movi 3
+movb R0,R1   # b值需要保存回去
+movi 0       # R0中设置为0，即内存地址0
+movc R2,R0   # 取出a值
+movi 2       # R0中设置为2，即内存地址0000 0010
+movc R1,R0   # 取出结果
+add R1,R2    # 做加法
+movb R0,R1   # 将结果存回去
+movd         # 保存当前的PC值到R3
+movi -12     # R0的值设置为-12
+add R3,R0    # R3的值加-12
+jg           # 如果第12行的减法设置G为1,就跳转
+movi 2
+movc R1,R0   # 取出结果值
+movi 0
+sub R0,R1    # 由于算的是a×(-b)，故要对结果取相反数
+out R0
+halt
